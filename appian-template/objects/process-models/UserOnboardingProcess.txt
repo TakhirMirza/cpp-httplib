@@ -1,0 +1,70 @@
+/*
+ * Process Model: User Onboarding Process
+ * Description: Template for user registration and setup workflow
+ * Created: Template
+ */
+
+Process Model Configuration:
+- Name: User Onboarding Process
+- Process Variables:
+  - newUser (User CDT) - The new user being onboarded
+  - approvalRequired (Boolean) - Whether manager approval is needed
+  - approvalStatus (Text) - Approval status
+  - onboardingTasks (Task CDT, multiple) - List of onboarding tasks
+
+Process Flow:
+
+1. START NODE
+   ↓
+2. USER INPUT TASK: "Collect User Information"
+   - Form: User Registration Form
+   - Assignees: HR Team
+   - Task Description: "Please enter the new user's information"
+   - Outputs: newUser
+   ↓
+3. SCRIPT TASK: "Validate User Data"
+   - Expression: rule!validateUserData(ri!newUser)
+   - Outputs: validationResults
+   ↓
+4. GATEWAY: "Validation Successful?"
+   - Condition: ri!validationResults.isValid
+   ↓ (Yes)                    ↓ (No)
+5. GATEWAY: "Approval Required?"    → USER INPUT TASK: "Fix User Data"
+   - Condition: ri!approvalRequired      - Assignees: HR Team
+   ↓ (Yes)        ↓ (No)                 - Form: User Data Correction Form
+6. USER INPUT TASK:  → 8. SCRIPT TASK         ↓
+   "Manager Approval"                          → (Back to Gateway 4)
+   - Assignees: ri!newUser.manager
+   - Form: Approval Form
+   - Outputs: approvalStatus
+   ↓
+7. GATEWAY: "Approved?"
+   - Condition: ri!approvalStatus = "Approved"
+   ↓ (Yes)                    ↓ (No)
+8. SCRIPT TASK: "Create User Account"    → END NODE: "Onboarding Rejected"
+   - Expression: rule!createUserAccount(ri!newUser)
+   ↓
+9. SCRIPT TASK: "Generate Onboarding Tasks"
+   - Expression: rule!generateOnboardingTasks(ri!newUser)
+   - Outputs: onboardingTasks
+   ↓
+10. SUB-PROCESS: "Execute Onboarding Tasks"
+    - Process Model: Task Management Process
+    - Input: ri!onboardingTasks
+    ↓
+11. USER INPUT TASK: "Send Welcome Email"
+    - Assignees: System
+    - Expression: rule!sendWelcomeEmail(ri!newUser)
+    ↓
+12. END NODE: "Onboarding Complete"
+
+Exception Handling:
+- Error Boundary around all script tasks
+- Escalation for tasks not completed within SLA
+- Audit trail for all process steps
+
+Process Properties:
+- Security: Restrict to HR and Management roles
+- Priority: Normal
+- Process Category: Human Resources
+- Cleanup: Archive completed instances after 90 days

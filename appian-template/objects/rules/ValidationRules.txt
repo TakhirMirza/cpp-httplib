@@ -1,0 +1,210 @@
+/*
+ * Expression Rules: Validation Rules
+ * Description: Common data validation functions for reuse across the application
+ * Created: Template
+ */
+
+/* Rule: validateUserData
+ * Description: Validates user data structure
+ * Parameters: user (User CDT)
+ * Returns: ValidationResult CDT
+ */
+rule!validateUserData(
+  user: user
+) = a!localVariables(
+  local!errors: {},
+  
+  /* Validate required fields */
+  local!errors: if(
+    isnull(user.firstName) or len(trim(user.firstName)) = 0,
+    append(local!errors, "First name is required"),
+    local!errors
+  ),
+  local!errors: if(
+    isnull(user.lastName) or len(trim(user.lastName)) = 0,
+    append(local!errors, "Last name is required"),
+    local!errors
+  ),
+  local!errors: if(
+    isnull(user.email) or len(trim(user.email)) = 0,
+    append(local!errors, "Email address is required"),
+    local!errors
+  ),
+  local!errors: if(
+    isnull(user.username) or len(trim(user.username)) = 0,
+    append(local!errors, "Username is required"),
+    local!errors
+  ),
+  
+  /* Validate email format */
+  local!errors: if(
+    and(
+      not(isnull(user.email)),
+      not(regexmatch("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", user.email))
+    ),
+    append(local!errors, "Invalid email format"),
+    local!errors
+  ),
+  
+  /* Validate username format */
+  local!errors: if(
+    and(
+      not(isnull(user.username)),
+      not(regexmatch("^[A-Za-z0-9_]{3,20}$", user.username))
+    ),
+    append(local!errors, "Username must be 3-20 characters, letters, numbers, and underscores only"),
+    local!errors
+  ),
+  
+  /* Validate phone number format (if provided) */
+  local!errors: if(
+    and(
+      not(isnull(user.phone)),
+      len(trim(user.phone)) > 0,
+      not(regexmatch("^[\+]?[1-9][\d]{0,15}$", regexreplace(user.phone, "[^\d\+]", "")))
+    ),
+    append(local!errors, "Invalid phone number format"),
+    local!errors
+  ),
+  
+  /* Return validation result */
+  type!ValidationResult(
+    isValid: length(local!errors) = 0,
+    errors: local!errors,
+    warnings: {}
+  )
+)
+
+/* Rule: validateTaskData
+ * Description: Validates task data structure
+ * Parameters: task (Task CDT)
+ * Returns: ValidationResult CDT
+ */
+rule!validateTaskData(
+  task: task
+) = a!localVariables(
+  local!errors: {},
+  local!warnings: {},
+  
+  /* Validate required fields */
+  local!errors: if(
+    isnull(task.title) or len(trim(task.title)) = 0,
+    append(local!errors, "Task title is required"),
+    local!errors
+  ),
+  local!errors: if(
+    isnull(task.status) or len(trim(task.status)) = 0,
+    append(local!errors, "Task status is required"),
+    local!errors
+  ),
+  local!errors: if(
+    isnull(task.priority) or len(trim(task.priority)) = 0,
+    append(local!errors, "Task priority is required"),
+    local!errors
+  ),
+  
+  /* Validate status values */
+  local!errors: if(
+    and(
+      not(isnull(task.status)),
+      not(contains({"New", "In Progress", "Completed", "Cancelled"}, task.status))
+    ),
+    append(local!errors, "Invalid task status"),
+    local!errors
+  ),
+  
+  /* Validate priority values */
+  local!errors: if(
+    and(
+      not(isnull(task.priority)),
+      not(contains({"Low", "Medium", "High", "Critical"}, task.priority))
+    ),
+    append(local!errors, "Invalid task priority"),
+    local!errors
+  ),
+  
+  /* Validate due date */
+  local!warnings: if(
+    and(
+      not(isnull(task.dueDate)),
+      task.dueDate < today()
+    ),
+    append(local!warnings, "Due date is in the past"),
+    local!warnings
+  ),
+  
+  /* Validate estimated hours */
+  local!errors: if(
+    and(
+      not(isnull(task.estimatedHours)),
+      task.estimatedHours <= 0
+    ),
+    append(local!errors, "Estimated hours must be greater than 0"),
+    local!errors
+  ),
+  
+  /* Return validation result */
+  type!ValidationResult(
+    isValid: length(local!errors) = 0,
+    errors: local!errors,
+    warnings: local!warnings
+  )
+)
+
+/* Rule: validateEmailAddress
+ * Description: Validates email address format
+ * Parameters: email (Text)
+ * Returns: Boolean
+ */
+rule!validateEmailAddress(
+  email: email
+) = and(
+  not(isnull(email)),
+  len(trim(email)) > 0,
+  regexmatch("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", email)
+)
+
+/* Rule: validatePhoneNumber
+ * Description: Validates phone number format
+ * Parameters: phone (Text)
+ * Returns: Boolean
+ */
+rule!validatePhoneNumber(
+  phone: phone
+) = if(
+  or(isnull(phone), len(trim(phone)) = 0),
+  true, /* Empty phone is valid (optional field) */
+  regexmatch("^[\+]?[1-9][\d]{0,15}$", regexreplace(phone, "[^\d\+]", ""))
+)
+
+/* Rule: validateDateRange
+ * Description: Validates that start date is before end date
+ * Parameters: startDate (Date), endDate (Date)
+ * Returns: Boolean
+ */
+rule!validateDateRange(
+  startDate: startDate,
+  endDate: endDate
+) = if(
+  or(isnull(startDate), isnull(endDate)),
+  true, /* If either date is null, validation passes */
+  startDate <= endDate
+)
+
+/* Rule: validateRequiredText
+ * Description: Validates that text field is not null or empty
+ * Parameters: text (Text), fieldName (Text)
+ * Returns: ValidationResult CDT
+ */
+rule!validateRequiredText(
+  text: text,
+  fieldName: fieldName
+) = type!ValidationResult(
+  isValid: and(not(isnull(text)), len(trim(text)) > 0),
+  errors: if(
+    or(isnull(text), len(trim(text)) = 0),
+    {fieldName & " is required"},
+    {}
+  ),
+  warnings: {}
+)

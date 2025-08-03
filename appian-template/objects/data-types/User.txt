@@ -1,0 +1,106 @@
+/*
+ * Custom Data Type: User
+ * Description: Standard user information structure for the application
+ * Created: Template
+ */
+
+User CDT Structure:
+- id (Integer) - Unique identifier for the user
+- username (Text) - User's login username
+- firstName (Text) - User's first name
+- lastName (Text) - User's last name
+- email (Text) - User's email address
+- phone (Text) - User's phone number
+- department (Text) - User's department
+- role (Text) - User's role/position
+- isActive (Boolean) - Whether the user account is active
+- createdDate (Date) - Date when user was created
+- lastLoginDate (Date and Time) - Last login timestamp
+- profilePicture (Document) - User's profile picture
+- manager (User) - Reference to user's manager (nested CDT)
+
+Appian CDT Configuration:
+{
+  "name": "User",
+  "namespace": "your_namespace",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Number (Integer)",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "firstName",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "lastName",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "phone",
+      "type": "Text",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "department",
+      "type": "Text",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "role",
+      "type": "Text",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "isActive",
+      "type": "Boolean",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "createdDate",
+      "type": "Date",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "lastLoginDate",
+      "type": "Date and Time",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "profilePicture",
+      "type": "Document",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "manager",
+      "type": "User",
+      "multiple": false,
+      "required": false
+    }
+  ]
+}

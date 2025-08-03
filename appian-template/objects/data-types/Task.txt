@@ -1,0 +1,127 @@
+/*
+ * Custom Data Type: Task
+ * Description: Generic task/work item structure for task management
+ * Created: Template
+ */
+
+Task CDT Structure:
+- id (Integer) - Unique identifier for the task
+- title (Text) - Task title/summary
+- description (Text) - Detailed task description
+- status (Text) - Task status (New, In Progress, Completed, Cancelled)
+- priority (Text) - Task priority (Low, Medium, High, Critical)
+- assignedTo (User) - User assigned to the task
+- createdBy (User) - User who created the task
+- createdDate (Date and Time) - Task creation timestamp
+- dueDate (Date) - Task due date
+- completedDate (Date and Time) - Task completion timestamp
+- category (Text) - Task category/type
+- estimatedHours (Number) - Estimated hours to complete
+- actualHours (Number) - Actual hours spent
+- attachments (Document) - Task-related documents (multiple)
+- comments (Text) - Task comments/notes (multiple)
+- parentTask (Task) - Parent task reference for subtasks
+
+Appian CDT Configuration:
+{
+  "name": "Task",
+  "namespace": "your_namespace",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Number (Integer)",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "Text",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "priority",
+      "type": "Text",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "assignedTo",
+      "type": "User",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "createdBy",
+      "type": "User",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "createdDate",
+      "type": "Date and Time",
+      "multiple": false,
+      "required": true
+    },
+    {
+      "name": "dueDate",
+      "type": "Date",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "completedDate",
+      "type": "Date and Time",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "category",
+      "type": "Text",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "estimatedHours",
+      "type": "Number (Decimal)",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "actualHours",
+      "type": "Number (Decimal)",
+      "multiple": false,
+      "required": false
+    },
+    {
+      "name": "attachments",
+      "type": "Document",
+      "multiple": true,
+      "required": false
+    },
+    {
+      "name": "comments",
+      "type": "Text",
+      "multiple": true,
+      "required": false
+    },
+    {
+      "name": "parentTask",
+      "type": "Task",
+      "multiple": false,
+      "required": false
+    }
+  ]
+}
