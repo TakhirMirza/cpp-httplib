@@ -1,0 +1,162 @@
+/*
+ * Application Constants
+ * Description: Configuration constants and reusable values for the application
+ * Created: Template
+ */
+
+/* Process Model Constants */
+cons!TASK_MANAGEMENT_PROCESS = "Task Management Process"
+cons!USER_ONBOARDING_PROCESS = "User Onboarding Process"
+cons!DOCUMENT_REVIEW_PROCESS = "Document Review Process"
+
+/* Interface Constants */
+cons!DASHBOARD_INTERFACE = "Dashboard Interface"
+cons!TASK_LIST_INTERFACE = "Task List Interface"
+cons!USER_PROFILE_INTERFACE = "User Profile Interface"
+
+/* Status Constants */
+cons!TASK_STATUS_NEW = "New"
+cons!TASK_STATUS_IN_PROGRESS = "In Progress"
+cons!TASK_STATUS_COMPLETED = "Completed"
+cons!TASK_STATUS_CANCELLED = "Cancelled"
+
+cons!TASK_STATUSES = {
+  cons!TASK_STATUS_NEW,
+  cons!TASK_STATUS_IN_PROGRESS,
+  cons!TASK_STATUS_COMPLETED,
+  cons!TASK_STATUS_CANCELLED
+}
+
+/* Priority Constants */
+cons!PRIORITY_LOW = "Low"
+cons!PRIORITY_MEDIUM = "Medium"
+cons!PRIORITY_HIGH = "High"
+cons!PRIORITY_CRITICAL = "Critical"
+
+cons!TASK_PRIORITIES = {
+  cons!PRIORITY_LOW,
+  cons!PRIORITY_MEDIUM,
+  cons!PRIORITY_HIGH,
+  cons!PRIORITY_CRITICAL
+}
+
+/* User Role Constants */
+cons!ROLE_ADMIN = "Administrator"
+cons!ROLE_MANAGER = "Manager"
+cons!ROLE_USER = "User"
+cons!ROLE_GUEST = "Guest"
+
+cons!USER_ROLES = {
+  cons!ROLE_ADMIN,
+  cons!ROLE_MANAGER,
+  cons!ROLE_USER,
+  cons!ROLE_GUEST
+}
+
+/* Department Constants */
+cons!DEPT_IT = "Information Technology"
+cons!DEPT_HR = "Human Resources"
+cons!DEPT_FINANCE = "Finance"
+cons!DEPT_OPERATIONS = "Operations"
+cons!DEPT_MARKETING = "Marketing"
+cons!DEPT_SALES = "Sales"
+
+cons!DEPARTMENTS = {
+  cons!DEPT_IT,
+  cons!DEPT_HR,
+  cons!DEPT_FINANCE,
+  cons!DEPT_OPERATIONS,
+  cons!DEPT_MARKETING,
+  cons!DEPT_SALES
+}
+
+/* Configuration Constants */
+cons!DEFAULT_PAGE_SIZE = 20
+cons!MAX_PAGE_SIZE = 100
+cons!SESSION_TIMEOUT_MINUTES = 30
+cons!PASSWORD_MIN_LENGTH = 8
+cons!USERNAME_MIN_LENGTH = 3
+cons!USERNAME_MAX_LENGTH = 20
+
+/* Date Format Constants */
+cons!DATE_FORMAT_SHORT = "MM/DD/YYYY"
+cons!DATE_FORMAT_LONG = "MMMM DD, YYYY"
+cons!DATETIME_FORMAT = "MM/DD/YYYY hh:mm AM/PM"
+cons!TIME_FORMAT = "hh:mm AM/PM"
+
+/* Email Templates */
+cons!EMAIL_WELCOME_SUBJECT = "Welcome to the Application"
+cons!EMAIL_TASK_ASSIGNMENT_SUBJECT = "New Task Assigned: "
+cons!EMAIL_TASK_COMPLETION_SUBJECT = "Task Completed: "
+cons!EMAIL_PASSWORD_RESET_SUBJECT = "Password Reset Request"
+
+/* File Upload Constants */
+cons!MAX_FILE_SIZE_MB = 10
+cons!ALLOWED_FILE_TYPES = {
+  "pdf", "doc", "docx", "xls", "xlsx", 
+  "ppt", "pptx", "txt", "jpg", "jpeg", 
+  "png", "gif", "zip"
+}
+
+/* Validation Constants */
+cons!EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+cons!PHONE_REGEX = "^[\+]?[1-9][\d]{0,15}$"
+cons!USERNAME_REGEX = "^[A-Za-z0-9_]{3,20}$"
+
+/* Color Constants for UI */
+cons!COLOR_PRIMARY = "#1976D2"
+cons!COLOR_SECONDARY = "#424242"
+cons!COLOR_SUCCESS = "#4CAF50"
+cons!COLOR_WARNING = "#FF9800"
+cons!COLOR_ERROR = "#F44336"
+cons!COLOR_INFO = "#2196F3"
+
+/* Grid and Layout Constants */
+cons!GRID_COLUMN_WIDTH_NARROW = "NARROW"
+cons!GRID_COLUMN_WIDTH_MEDIUM = "MEDIUM"
+cons!GRID_COLUMN_WIDTH_WIDE = "WIDE"
+
+/* SLA Constants (in hours) */
+cons!SLA_HIGH_PRIORITY = 4
+cons!SLA_MEDIUM_PRIORITY = 24
+cons!SLA_LOW_PRIORITY = 72
+
+/* Escalation Constants */
+cons!ESCALATION_LEVEL_1 = 1
+cons!ESCALATION_LEVEL_2 = 2
+cons!ESCALATION_LEVEL_3 = 3
+cons!MAX_ESCALATION_LEVEL = 3
+
+/* Notification Types */
+cons!NOTIFICATION_EMAIL = "email"
+cons!NOTIFICATION_IN_APP = "in_app"
+cons!NOTIFICATION_SMS = "sms"
+
+/* Record Type Constants */
+cons!RECORD_TYPE_USER = "User Record"
+cons!RECORD_TYPE_TASK = "Task Record"
+cons!RECORD_TYPE_DOCUMENT = "Document Record"
+
+/* Integration Constants */
+cons!INTEGRATION_TIMEOUT_SECONDS = 30
+cons!RETRY_ATTEMPTS = 3
+cons!RETRY_DELAY_SECONDS = 5
+
+/* Environment-Specific Constants */
+/* Note: These should be updated for each environment */
+cons!ENVIRONMENT = "DEVELOPMENT" /* DEVELOPMENT, STAGING, PRODUCTION */
+cons!BASE_URL = "https://your-appian-site.appiancloud.com"
+cons!SUPPORT_EMAIL = "support@yourcompany.com"
+cons!ADMIN_EMAIL = "admin@yourcompany.com"
+
+/* Logging Constants */
+cons!LOG_LEVEL_DEBUG = "DEBUG"
+cons!LOG_LEVEL_INFO = "INFO"
+cons!LOG_LEVEL_WARN = "WARN"
+cons!LOG_LEVEL_ERROR = "ERROR"
+
+cons!DEFAULT_LOG_LEVEL = cons!LOG_LEVEL_INFO
+
+/* Cache Constants */
+cons!CACHE_EXPIRY_MINUTES = 15
+cons!CACHE_MAX_ENTRIES = 1000

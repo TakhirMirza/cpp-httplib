@@ -1,0 +1,86 @@
+/*
+ * Process Model: Task Management Process
+ * Description: Basic task creation, assignment, and completion workflow
+ * Created: Template
+ */
+
+Process Model Configuration:
+- Name: Task Management Process
+- Process Variables:
+  - task (Task CDT) - The task being managed
+  - taskUpdates (Task CDT, multiple) - History of task updates
+  - notificationSent (Boolean) - Track notification status
+  - escalationLevel (Integer) - Current escalation level
+
+Process Flow:
+
+1. START NODE
+   ↓
+2. SCRIPT TASK: "Initialize Task"
+   - Expression: rule!initializeTask(ri!task)
+   - Outputs: task (with default values set)
+   ↓
+3. GATEWAY: "Task Assignment Required?"
+   - Condition: isnull(ri!task.assignedTo)
+   ↓ (Yes)                    ↓ (No)
+4. USER INPUT TASK: "Assign Task"    → 6. SCRIPT TASK: "Send Assignment Notification"
+   - Assignees: Task Managers
+   - Form: Task Assignment Form
+   - Outputs: task.assignedTo
+   ↓
+5. SCRIPT TASK: "Update Task Status"
+   - Expression: rule!updateTaskStatus(ri!task, "Assigned")
+   ↓
+6. SCRIPT TASK: "Send Assignment Notification"
+   - Expression: rule!sendTaskNotification(ri!task, "assigned")
+   - Outputs: notificationSent
+   ↓
+7. USER INPUT TASK: "Work on Task"
+   - Assignees: ri!task.assignedTo
+   - Form: Task Work Form
+   - Task Description: "Please work on: " & ri!task.title
+   - Outputs: task (updated with progress)
+   ↓
+8. GATEWAY: "Task Completed?"
+   - Condition: ri!task.status = "Completed"
+   ↓ (Yes)                    ↓ (No)
+9. SCRIPT TASK: "Finalize Task"      → TIMER: "Wait for Update"
+   - Expression: rule!finalizeTask(ri!task)    - Duration: 1 day
+   - Outputs: task.completedDate               ↓
+   ↓                                          GATEWAY: "Escalation Needed?"
+10. SCRIPT TASK: "Send Completion Notification" - Condition: ri!escalationLevel < 3
+    - Expression: rule!sendTaskNotification(   ↓ (Yes)        ↓ (No)
+      ri!task, "completed")                   ESCALATION → USER INPUT TASK:
+    ↓                                         TASK         "Force Complete"
+11. END NODE: "Task Complete"                 ↓            - Assignees: Managers
+                                             → (Back to 7) ↓
+                                                          → (To 9)
+
+Escalation Sub-Process:
+- SCRIPT TASK: "Increment Escalation Level"
+  - Expression: ri!escalationLevel + 1
+- USER INPUT TASK: "Manager Review"
+  - Assignees: ri!task.assignedTo.manager
+  - Form: Escalation Review Form
+- GATEWAY: "Reassign Task?"
+  - If Yes: → Task Assignment
+  - If No: → Continue with current assignee
+
+Exception Handling:
+- Catch all exceptions and log to audit trail
+- Automatic retry for system failures
+- Manual intervention for data validation errors
+
+Process Properties:
+- Security: All authenticated users can start
+- Priority: Based on task.priority
+- Process Category: Task Management
+- SLA: Based on task.dueDate
+- Cleanup: Archive after task completion + 30 days
+
+Process Rules Referenced:
+- rule!initializeTask()
+- rule!updateTaskStatus()
+- rule!sendTaskNotification()
+- rule!finalizeTask()
+- rule!validateTaskData()
